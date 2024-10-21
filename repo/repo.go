@@ -12,89 +12,81 @@ import (
 
 
 type AccRepo interface {
-	    GetAcc(id string) *model.AccountModel
+	    GetAcc(id int) *model.AccountModel
 			CreateAcc(acc *model.AccountModel)
-			UpdateAcc(id string, field string, value string)
-			DeleteAcc(id string)
-			BlockAcc(id string)
-			SendMoney(from, to string, amount float64)  error
+			UpdateAcc(id int, field string, value string)
+			DeleteAcc(id int)
+			BlockAcc(id int)
+			SendMoney(from, to int, amount float64)  error
 }
 
-func NewConn(c config.Config) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
-	c.Host, c.User, c.Password, c.Dbname, c.Port,
-)
+func NewConn(c *config.Config) (*gorm.DB, error) {
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",c.Host, c.User, c.Password, c.Db, c.Port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		  return nil, err
 	}
 
-	db.AutoMigrate(&model.AccountModel{})
+
 	return db, nil
 }
 
 
 type Repo struct {
-	db  *gorm.DB
+	Db  *gorm.DB
 }
 
 
-func (r Repo) GetAcc(id string) *model.AccountModel {
+func (r Repo) GetAcc(id int) *model.AccountModel {
      var acc model.AccountModel 
-	   r.db.First(&acc, id)
-		 r.db.AutoMigrate(&model.AccountModel{})
+	   r.Db.First(&acc, id)
 		 return &acc
 }
 
 
 func (r Repo) CreateAcc(acc *model.AccountModel)  {
 	
-	r.db.Create(&model.AccountModel{
+	r.Db.Create(&model.AccountModel{
 		Type: acc.Type, 
 		Status: acc.Status,
-		Id: acc.Id,
 		Balance: 0,
 		ClientName: acc.ClientName,
 		Iin: acc.Iin,
 	})
-	r.db.AutoMigrate(&model.AccountModel{})
 }
 
 
-func (r Repo) UpdateAcc(id string, field string, value string)  {
+func (r Repo) UpdateAcc(id int, field string, value string)  {
 	var acc model.AccountModel
-	r.db.First(&acc, id)
-	r.db.Model(&acc).Update(field,  value)
-	r.db.AutoMigrate(&model.AccountModel{})
+	r.Db.First(&acc, id)
+	r.Db.Model(&acc).Update(field,  value)
 }
 
 
-func (r Repo) DeleteAcc(id string)  {
+func (r Repo) DeleteAcc(id int)  {
 	var acc model.AccountModel
-	r.db.Delete(&acc, id)
-	r.db.AutoMigrate(&model.AccountModel{})
+	r.Db.Delete(&acc, id)
 }
 
-func (r Repo) BlockAcc(id string)  {
+func (r Repo) BlockAcc(id int)  {
 	var acc model.AccountModel
-	r.db.First(&acc, id)
-	r.db.Model(&acc).Update("status",  "blocked")
-	r.db.AutoMigrate(&model.AccountModel{})
+	r.Db.First(&acc, id)
+	r.Db.Model(&acc).Update("status",  "blocked")
 }
 
-func (r Repo) SendMoney(from, to string, amount float64) error {
+func (r Repo) SendMoney(from, to int, amount float64) error {
 
 	var fromAcc model.AccountModel
 	var toAcc model.AccountModel  
-	r.db.First(&fromAcc, from)
-	r.db.First(&toAcc, to)
+	r.Db.First(&fromAcc, from)
+	r.Db.First(&toAcc, to)
 	if fromAcc.Status == "blocked" &&  toAcc.Status == "blocked" {
 		return errors.New("Blocked user!")
 	}
 	if fromAcc.Balance <= 0 {
 			return errors.New("Non enough money")
 	} 
-	return r.db.Transaction(func(tx *gorm.DB) error {
+	return r.Db.Transaction(func(tx *gorm.DB) error {
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 	fromAmount := fromAcc.Balance - amount
   toAmount := toAcc.Balance + amount
@@ -113,5 +105,5 @@ func (r Repo) SendMoney(from, to string, amount float64) error {
 	})
 }
 func NewRepo(db  *gorm.DB)  AccRepo {
-				return Repo{db: db}
+				return Repo{Db: db}
 }

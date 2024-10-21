@@ -11,11 +11,11 @@ type Config struct {
 	Port string `json:"port"`
 	User string `json:"user"`
 	Password string `json:"password"`
-	Dbname string `json:"db_name"`
+	Db string `json:"db"`
 }
 
 func GetConfig() Config {
-	var C Config 
+	var Cfg Config 
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
@@ -25,11 +25,11 @@ func GetConfig() Config {
 	if err != nil { // Handle errors reading the config file
 			panic(fmt.Errorf("fatal error config file: %w", err))
 	}
-	viper.WatchConfig()
-	var e  = viper.Unmarshal(&C)
+
+	var e  = viper.Unmarshal(&Cfg)
 	if e != nil {
 		fmt.Println("unable to decode into struct, %v", err)
 	}
-
-	return C
+	viper.WatchConfig()
+	return Cfg
 }

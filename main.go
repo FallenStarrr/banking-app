@@ -9,13 +9,21 @@ import (
 
 func main() {
    c := config.GetConfig()
-	 fmt.Println(c)
+	 fmt.Println(c.Db)
 
-	db, err := repo.NewConn(c)
+	db, err := repo.NewConn(&c)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("DB ERR : ", err)
+		return
 	}
   r := repo.NewRepo(db)
-	r.CreateAcc(&model.AccountModel{Type: "Savings", Status: "Active", ClientName: "John Doe", Id: "1", Iin: "249" })
-	r.CreateAcc(&model.AccountModel{Type: "Savings", Status: "Active", ClientName: "Jane Doe", Id: "2", Iin: "250" })
+	// r.CreateAcc(&model.AccountModel{Type: "Savings", Status: "Active", ClientName: "John Doe", Iin: "249" })
+	// r.CreateAcc(&model.AccountModel{Type: "Savings", Status: "Active", ClientName: "Jane Doe", Iin: "250" })
+	r.DeleteAcc(3)
+	r.DeleteAcc(4)
+	r.DeleteAcc(5)
+	r.DeleteAcc(6)
+	r.SendMoney(1, 2, 1000)
+
+
 }
