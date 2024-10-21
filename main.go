@@ -9,10 +9,12 @@ import (
 func main() {
    c := config.GetConfig()
 	 fmt.Println(c)
-	 
+
 	db, err := repo.NewConn(c)
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	repo.NewRepo(db)
 	
 }
