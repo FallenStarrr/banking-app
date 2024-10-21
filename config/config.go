@@ -6,12 +6,16 @@ import (
 )
 
 
-type config struct {
-	Addr string `json:"addr"`
+type Config struct {
+	Host string `json:"host"`
+	Port string `json:"port"`
+	User string `json:"user"`
+	Password string `json:"password"`
+	Dbname string `json:"db_name"`
 }
 
-func GetConfig() config {
-	var C config 
+func GetConfig() Config {
+	var C Config 
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")

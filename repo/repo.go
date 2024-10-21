@@ -18,9 +18,20 @@ type AccRepo interface {
 			BlockAcc(id string)
 }
 
+func NewConn(c config.Config) (*gorm.DB, error) {
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=9920 sslmode=disable TimeZone=Asia/Shanghai",
+	c.Host, c.User, c.Password, c.Dbname, 
+)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		  return nil, err
+	}
+	return db, nil
+}
+
 
 type Repo struct {
-	db  *
+	db  *gorm.DB
 }
 
 
