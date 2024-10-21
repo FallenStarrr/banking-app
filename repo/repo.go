@@ -5,7 +5,7 @@ import (
   "gorm.io/driver/postgres"
 	"github.com/FallenStarrr/banking-app/config"
 	"github.com/FallenStarrr/banking-app/model"
-	"context"
+	_"context"
 	"fmt"
 	"errors"
 )
@@ -21,8 +21,8 @@ type AccRepo interface {
 }
 
 func NewConn(c config.Config) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=9920 sslmode=disable TimeZone=Asia/Shanghai",
-	c.Host, c.User, c.Password, c.Dbname, 
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
+	c.Host, c.User, c.Password, c.Dbname, c.Port,
 )
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
