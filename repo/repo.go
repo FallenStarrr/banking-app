@@ -1,33 +1,55 @@
 package repo
 
 import (
+	"gorm.io/gorm"
+  "gorm.io/driver/postgres"
 	"github.com/FallenStarrr/banking-app/config"
+	"github.com/FallenStarrr/banking-app/model"
 	"context"
-	"github.com/go-redis/redis"
 	"fmt"
 )
 
 
 type AccRepo interface {
-	    GetAcc()
-			SetAcc()
-			BlockAcc()
+	    GetAcc(id string) model.AccountModel
+			CreateAcc(acc model.AccountModel)
+			UpdateAcc(id string)
+			DeleteAcc(id string)
+			BlockAcc(id string)
 }
 
 
 type Repo struct {
-	red  *redis.Client
+	db  *
 }
 
-func NewRepo() *redis.Client {
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     config.GetConfig().Addr,
-		Password: "", // no password set
-		DB:       0,  // use default DB
-})
+
+func (r Repo) GetAcc(id string) model.AccountModel {
+
+}
 
 
+func (r Repo) CreateAcc(acc model.AccountModel)  {
+	
+}
 
 
-return rdb
+func (r Repo) UpdateAcc(id string)  {
+	var ctx = context.Background()
+
+}
+
+
+func (r Repo) DeleteAcc(id string)  {
+	var ctx = context.Background()
+
+}
+
+func (r Repo) BlockAcc(id string)  {
+	var ctx = context.Background()
+
+}
+
+func NewRepo()  AccRepo {
+
 }
