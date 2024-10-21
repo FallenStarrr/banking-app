@@ -17,7 +17,7 @@ type AccRepo interface {
 			UpdateAcc(id string, field string, value string)
 			DeleteAcc(id string)
 			BlockAcc(id string)
-			SendMoney(from, to string, amount float64)
+			SendMoney(from, to string, amount float64)  error
 }
 
 func NewConn(c config.Config) (*gorm.DB, error) {
@@ -82,8 +82,33 @@ func (r Repo) BlockAcc(id string)  {
 	r.db.AutoMigrate(&model.AccountModel{})
 }
 
-func (r Repo) SendMoney(from, to string, amount float64) {
+func (r Repo) SendMoney(from, to string, amount float64) error {
 
+	var fromAcc model.AccountModel
+	var toAcc model.AccountModel  
+	r.db.First(&fromAcc, from)
+	r.db.First(&toAcc, to)
+
+	if fromAcc.Balance <= 0 {
+			return errors.New("Non enough money")
+	} 
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+	fromAmount := fromAcc.Balance - amount
+  toAmount := toAcc.Balance + amount
+		if err := tx.Model(&fromAcc).Update("balance",  fromAmount).Error; err != nil {
+			// return any error will rollback
+			return err
+		}
+	
+		if err := tx.Model(&toAcc).Update("balance",  toAmount).Error; err != nil {
+			// return any error will rollback
+			return err
+		}
+	
+		// return nil will commit the whole transaction
+		return nil
+	})
 }
 func NewRepo(db  *gorm.DB)  AccRepo {
 				return Repo{db: db}
