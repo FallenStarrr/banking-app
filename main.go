@@ -15,6 +15,6 @@ func main() {
 		fmt.Println(err)
 	}
 
-	repo.NewRepo(db)
+	repo.NewRepo(db).CreateAcc()
 	
 }

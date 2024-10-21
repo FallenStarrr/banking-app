@@ -88,7 +88,9 @@ func (r Repo) SendMoney(from, to string, amount float64) error {
 	var toAcc model.AccountModel  
 	r.db.First(&fromAcc, from)
 	r.db.First(&toAcc, to)
-
+	if fromAcc.Status == "blocked" &&  toAcc.Status == "blocked" {
+		return errors.New("Blocked user!")
+	}
 	if fromAcc.Balance <= 0 {
 			return errors.New("Non enough money")
 	} 
