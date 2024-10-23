@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"strconv"
 	"github.com/google/uuid"
 	"github.com/FallenStarrr/banking-app/config"
@@ -45,8 +46,12 @@ func PutAccount(c *fiber.Ctx) error {
 
 func SendMoney(c *fiber.Ctx) error {
 	
-	from :=  c.Params("from")
-	f, _ := strconv.Atoi(from)
+	from :=  c.Query("from")
+	
+	f, err := strconv.Atoi(from)
+	if err != nil {
+		fmt.Println("FROM : ", err )
+	}
 	to :=  c.Query("to")
 	t, _ := strconv.Atoi(to)
 	amount := c.Query("amount")
