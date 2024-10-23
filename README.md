@@ -8,8 +8,11 @@ Stack:
 - Language:  Golang
 - Router: Fiber
 - Communication: RestAPI
+- VCS - Git, GitHub
+- Editor VS Code
+- Request Sending - Postman
 
-base : localhost:3000
+base_url : localhost:3000
 - /account/15?field=type&value=credit - PUT update one account by id and query params
 - /account/:id - GET one account by id
 - /account/:id - DELETE delete one account by id
