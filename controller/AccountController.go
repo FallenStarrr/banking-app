@@ -39,7 +39,11 @@ func PutAccount(c *fiber.Ctx) error {
 	id :=  c.Params("id")
 	field :=  c.Query("field")
 	val := c.Query("value")
-	s.UpdateAcc(id, field, val)
+	_, e  := s.UpdateAcc(id, field, val)
+	fmt.Println(e)
+	if e != "" {
+			return c.JSON(e)
+	}
 	return c.JSON(id)
 }
 
@@ -75,7 +79,11 @@ func CreateAccount(c *fiber.Ctx) error {
 	if err := c.BodyParser(acc); err != nil {
 		return err
 }
-
- 
+  s.CreateAcc(acc)
 	return c.JSON("Account created!")
+}
+
+func BlockAccount(c *fiber.Ctx) error {
+				id := c.Params("id")
+				return c.JSON(s.BlockAcc(id))
 }
