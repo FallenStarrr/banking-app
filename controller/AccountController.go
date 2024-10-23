@@ -33,7 +33,11 @@ func DeleteAccount(c *fiber.Ctx) error {
 
 
 func PutAccount(c *fiber.Ctx) error {
-	return c.JSON(s.UpdateAcc(c.Params("id"), c.Query("field"), c.Query("value")))
+	id :=  c.Params("id")
+	field :=  c.Query("field")
+	val := c.Query("value")
+	s.UpdateAcc(id, field, val)
+	return c.JSON(id)
 }
 
 
