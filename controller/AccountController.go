@@ -26,7 +26,9 @@ func GetAccount(c *fiber.Ctx) error {
 
 
 func DeleteAccount(c *fiber.Ctx) error {
-	return c.JSON(s.DeleteAcc(c.Params("id")))
+	id :=  c.Params("id")
+	s.DeleteAcc(id)
+	return c.JSON(id)
 }
 
 
@@ -43,5 +45,5 @@ func CreateAccount(c *fiber.Ctx) error {
 }
 
  
-	return c.JSON(s.CreateAcc(acc))
+	return c.JSON("Account created!")
 }

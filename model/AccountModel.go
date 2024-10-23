@@ -3,7 +3,7 @@ package model
 import "gorm.io/gorm"
 
 type AccountModel struct {
-	 gorm.Model
+	 gorm.Model `json:"-"`
 	 Type string `json:"type"`
 	 Status string `json:"status"`
 	 Balance float64 `json:"balance"`
