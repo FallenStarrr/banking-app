@@ -21,7 +21,7 @@ import (
 
 
 func GetAccount(c *fiber.Ctx) error {
-	return s.GetAcc(c.Params("id"))
+	return c.JSON(s.GetAcc(c.Params("id")))
 }
 
 

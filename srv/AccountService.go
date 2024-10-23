@@ -6,10 +6,10 @@ import (
 )
 
 type AccSrv interface {
-	GetAcc(id int) *model.AccountModel
+	GetAcc(id string) *model.AccountModel
 	CreateAcc(acc *model.AccountModel)
-	UpdateAcc(id int, field string, value string)
-	DeleteAcc(id int)
+	UpdateAcc(id string, field string, value string)
+	DeleteAcc(id string)
 }
 
 
@@ -25,12 +25,12 @@ type AccountService struct {
 
 
 
-func(a *AccountService) GetAcc(id int) *model.AccountModel {
+func(a *AccountService) GetAcc(id string) *model.AccountModel {
 			return a.repo.GetAcc(id)
 }
 
 
-func(a *AccountService) DeleteAcc(id int)  {
+func(a *AccountService) DeleteAcc(id string)  {
 			 a.repo.DeleteAcc(id)
 }
 
@@ -40,7 +40,7 @@ func(a *AccountService) CreateAcc( acc *model.AccountModel)  {
 }
 
 
-func(a *AccountService) UpdateAcc(id int, field string, value string) {
+func(a *AccountService) UpdateAcc(id string, field string, value string) {
 	a.repo.UpdateAcc(id, field, value)
 }
 

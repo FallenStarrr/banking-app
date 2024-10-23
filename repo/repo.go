@@ -12,11 +12,11 @@ import (
 
 
 type AccRepo interface {
-	    GetAcc(id int) *model.AccountModel
+	    GetAcc(id string) *model.AccountModel
 			CreateAcc(acc *model.AccountModel)
-			UpdateAcc(id int, field string, value string)
-			DeleteAcc(id int)
-			BlockAcc(id int)
+			UpdateAcc(id string, field string, value string)
+			DeleteAcc(id string)
+			BlockAcc(id string)
 			SendMoney(from, to int, amount float64)  error
 }
 
@@ -37,7 +37,7 @@ type Repo struct {
 }
 
 
-func (r Repo) GetAcc(id int) *model.AccountModel {
+func (r Repo) GetAcc(id string) *model.AccountModel {
      var acc model.AccountModel 
 	   r.Db.First(&acc, id)
 		 return &acc
@@ -56,19 +56,19 @@ func (r Repo) CreateAcc(acc *model.AccountModel)  {
 }
 
 
-func (r Repo) UpdateAcc(id int, field string, value string)  {
+func (r Repo) UpdateAcc(id string, field string, value string)  {
 	var acc model.AccountModel
 	r.Db.First(&acc, id)
 	r.Db.Model(&acc).Update(field,  value)
 }
 
 
-func (r Repo) DeleteAcc(id int)  {
+func (r Repo) DeleteAcc(id string)  {
 	var acc model.AccountModel
 	r.Db.Delete(&acc, id)
 }
 
-func (r Repo) BlockAcc(id int)  {
+func (r Repo) BlockAcc(id string)  {
 	var acc model.AccountModel
 	r.Db.First(&acc, id)
 	r.Db.Model(&acc).Update("status",  "blocked")
