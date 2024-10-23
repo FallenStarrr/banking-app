@@ -1,14 +1,13 @@
 package main
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"github.com/FallenStarrr/banking-app/controller"
+	"github.com/gofiber/fiber/v2"
 	"log"
 )
 
 func main() {
 
-	 
 	app := fiber.New()
 
 	app.Get("/account/:id", controller.GetAccount)
