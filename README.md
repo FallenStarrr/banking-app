@@ -1,6 +1,7 @@
 # banking-app
 
 # account system
+# Switch to the dev branch
 # go run main.go to run - start up the project
 Stack:
 - DB: PostgresSQL
