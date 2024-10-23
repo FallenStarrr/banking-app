@@ -2,6 +2,9 @@
 
 # account system
 # go run main.go to run
+Stack:
+DB: PostgresSQL
+Golang
 
 base : localhost:3000
 - /account/15?field=type&value=credit - PUT update one account by id and query params
