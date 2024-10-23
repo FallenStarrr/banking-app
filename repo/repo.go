@@ -13,9 +13,9 @@ import (
 
 type AccRepo interface {
 	    GetAcc(id string) *model.AccountModel
-			CreateAcc(acc *model.AccountModel)
-			UpdateAcc(id string, field string, value string)
-			DeleteAcc(id string)
+			CreateAcc(acc *model.AccountModel) (tx *gorm.DB)
+			UpdateAcc(id string, field string, value string) (tx *gorm.DB)
+			DeleteAcc(id string) (tx *gorm.DB)
 			BlockAcc(id string)
 			SendMoney(from, to int, amount float64)  error
 }
@@ -44,9 +44,9 @@ func (r Repo) GetAcc(id string) *model.AccountModel {
 }
 
 
-func (r Repo) CreateAcc(acc *model.AccountModel)  {
+func (r Repo) CreateAcc(acc *model.AccountModel) (tx *gorm.DB)  {
 	
-	r.Db.Create(&model.AccountModel{
+	return r.Db.Create(&model.AccountModel{
 		Type: acc.Type, 
 		Status: acc.Status,
 		Balance: 0,
@@ -56,16 +56,16 @@ func (r Repo) CreateAcc(acc *model.AccountModel)  {
 }
 
 
-func (r Repo) UpdateAcc(id string, field string, value string)  {
+func (r Repo) UpdateAcc(id string, field string, value string) (tx *gorm.DB)  {
 	var acc model.AccountModel
 	r.Db.First(&acc, id)
-	r.Db.Model(&acc).Update(field,  value)
+	return r.Db.Model(&acc).Update(field,  value)
 }
 
 
-func (r Repo) DeleteAcc(id string)  {
+func (r Repo) DeleteAcc(id string) (tx *gorm.DB)  {
 	var acc model.AccountModel
-	r.Db.Delete(&acc, id)
+	return r.Db.Delete(&acc, id)
 }
 
 func (r Repo) BlockAcc(id string)  {

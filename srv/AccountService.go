@@ -3,13 +3,14 @@ package srv
 import (
 	"github.com/FallenStarrr/banking-app/model"
 	"github.com/FallenStarrr/banking-app/repo"
+	"gorm.io/gorm"
 )
 
 type AccSrv interface {
 	GetAcc(id string) *model.AccountModel
-	CreateAcc(acc *model.AccountModel)
-	UpdateAcc(id string, field string, value string)
-	DeleteAcc(id string)
+	CreateAcc(acc *model.AccountModel)  (tx *gorm.DB)
+	UpdateAcc(id string, field string, value string)  (tx *gorm.DB)
+	DeleteAcc(id string) (tx *gorm.DB)
 }
 
 
@@ -30,17 +31,17 @@ func(a *AccountService) GetAcc(id string) *model.AccountModel {
 }
 
 
-func(a *AccountService) DeleteAcc(id string)  {
-			 a.repo.DeleteAcc(id)
+func(a *AccountService) DeleteAcc(id string)  (tx *gorm.DB)  {
+			return  a.repo.DeleteAcc(id)
 }
 
 
-func(a *AccountService) CreateAcc( acc *model.AccountModel)  {
-	 a.repo.CreateAcc(acc)
+func(a *AccountService) CreateAcc( acc *model.AccountModel)  (tx *gorm.DB)  {
+	 return a.repo.CreateAcc(acc)
 }
 
 
-func(a *AccountService) UpdateAcc(id string, field string, value string) {
-	a.repo.UpdateAcc(id, field, value)
+func(a *AccountService) UpdateAcc(id string, field string, value string)  (tx *gorm.DB) {
+	return a.repo.UpdateAcc(id, field, value)
 }
 
