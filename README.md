@@ -1,7 +1,7 @@
 # banking-app
 
 # account system
-# go run main.go to run - stat up the project
+# go run main.go to run - start up the project
 Stack:
 - DB: PostgresSQL
 - Language:  Golang
