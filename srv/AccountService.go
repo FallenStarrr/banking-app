@@ -11,6 +11,7 @@ type AccSrv interface {
 	CreateAcc(acc *model.AccountModel)  (tx *gorm.DB)
 	UpdateAcc(id string, field string, value string)  (tx *gorm.DB)
 	DeleteAcc(id string) (tx *gorm.DB)
+	SendMoney(from, to int, amount float64)  error
 }
 
 
@@ -43,5 +44,9 @@ func(a *AccountService) CreateAcc( acc *model.AccountModel)  (tx *gorm.DB)  {
 
 func(a *AccountService) UpdateAcc(id string, field string, value string)  (tx *gorm.DB) {
 	return a.repo.UpdateAcc(id, field, value)
+}
+
+func (a *AccountService) SendMoney(from, to int, amount float64)  error {
+	return a.repo.SendMoney(from, to, amount)
 }
 

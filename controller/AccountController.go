@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"strconv"
+	"github.com/google/uuid"
+	"github.com/FallenStarrr/banking-app/config"
+	"github.com/FallenStarrr/banking-app/model"
+	"github.com/FallenStarrr/banking-app/repo"
+	"github.com/FallenStarrr/banking-app/srv"
 	"github.com/gofiber/fiber/v2"
-"github.com/FallenStarrr/banking-app/config"
-"github.com/FallenStarrr/banking-app/model"
-"github.com/FallenStarrr/banking-app/srv"
-"github.com/FallenStarrr/banking-app/repo"
 )
 
 
@@ -38,6 +40,21 @@ func PutAccount(c *fiber.Ctx) error {
 	val := c.Query("value")
 	s.UpdateAcc(id, field, val)
 	return c.JSON(id)
+}
+
+
+func SendMoney(c *fiber.Ctx) error {
+	
+	from :=  c.Params("from")
+	f, _ := strconv.Atoi(from)
+	to :=  c.Query("to")
+	t, _ := strconv.Atoi(to)
+	amount := c.Query("amount")
+	amt, _ := strconv.ParseFloat(amount, 64)
+	s.SendMoney(f, t, amt)
+	transactionId := uuid.New().String()
+	r := model.TransactionRes{From: f, To: t, Amount: amt, TransactionId: transactionId}
+	return c.JSON(r)
 }
 
 

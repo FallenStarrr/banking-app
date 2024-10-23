@@ -16,6 +16,7 @@ func main() {
 	app.Post("/account", controller.CreateAccount)
 
 	app.Put("/account/:id", controller.PutAccount)
+	app.Put("/send/account", controller.SendMoney)
 
 	log.Fatal(app.Listen(":3000"))
 
