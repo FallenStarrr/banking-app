@@ -56,8 +56,14 @@ func SendMoney(c *fiber.Ctx) error {
 	t, _ := strconv.Atoi(to)
 	amount := c.Query("amount")
 	amt, _ := strconv.ParseFloat(amount, 64)
-	s.SendMoney(f, t, amt)
 	transactionId := uuid.New().String()
+	var e  = s.SendMoney(f, t, amt)
+	if e != nil {
+		 internalError :=  fiber.StatusInternalServerError
+		 tErr := model.TransactionErr{StatusCode: internalError , Message: e.Error(), From: f, To: t, Amount: amt, TransactionId: transactionId}
+		 return c.JSON(tErr)
+	}
+	
 	r := model.TransactionRes{From: f, To: t, Amount: amt, TransactionId: transactionId}
 	return c.JSON(r)
 }
